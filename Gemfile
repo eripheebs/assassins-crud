@@ -12,7 +12,6 @@ gem 'sinatra-partial'
 gem 'dotenv'
 gem 'rest-client'
 gem 'json'
-gem 'pg'
 group :test do
   gem 'rspec'
   gem 'capybara'
@@ -20,4 +19,7 @@ group :test do
   gem 'rake'
   gem 'pry'
   gem 'coveralls', require: false
+end
+group :production do
+  gem 'pg'
 end
