@@ -11,6 +11,7 @@ gem 'sinatra-flash'
 gem 'sinatra-partial'
 gem 'dotenv'
 gem 'rest-client'
+gem 'rake'
 gem 'json'
 group :test do
   gem 'rspec'
