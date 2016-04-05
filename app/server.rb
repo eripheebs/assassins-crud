@@ -15,6 +15,7 @@ class Assassins < Sinatra::Base
   # end
 
   get ('/') do
-    erb :'sign_up/sign_up', :locals => {:client_id => CLIENT_ID}
+    erb :'sign_up/sign_up'
+    # , :locals => {:client_id => CLIENT_ID}
   end
 end
