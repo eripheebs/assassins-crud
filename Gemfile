@@ -12,6 +12,7 @@ gem 'sinatra-partial'
 gem 'dotenv'
 gem 'rest-client'
 gem 'json'
+gem 'pg'
 group :test do
   gem 'rspec'
   gem 'capybara'
