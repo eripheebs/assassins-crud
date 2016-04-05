@@ -82,6 +82,7 @@ GEM
     do_postgres (0.10.17)
       data_objects (= 0.10.17)
     docile (1.1.5)
+    dotenv (2.1.0)
     fastercsv (1.5.5)
     gherkin (3.2.0)
     json (1.8.3)
@@ -105,6 +106,8 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (11.1.2)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -155,8 +158,11 @@ DEPENDENCIES
   data_mapper
   database_cleaner
   dm-postgres-adapter
+  dotenv
+  json
   pry
   rake
+  rest-client
   rspec
   shotgun
   sinatra
