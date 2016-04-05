@@ -13,4 +13,8 @@ class Assassins < Sinatra::Base
   #     @current_user ||= User.get(session[:user_id])
   #   end
   # end
+
+  get ('/') do
+    erb :'sign_up/sign_up'
+  end
 end
