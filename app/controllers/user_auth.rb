@@ -51,7 +51,7 @@ class Assassins < Sinatra::Base
     end
   end
 
-  get '/callback' do
+  post '/callback' do
     session_code = request.env['rack.request.query_hash']['code']
 
     result = RestClient.post('https://github.com/login/oauth/access_token',
@@ -61,6 +61,16 @@ class Assassins < Sinatra::Base
                              :accept => :json)
 
     session[:access_token] = JSON.parse(result)['access_token']
+
+    username = JSON.parse(RestClient.get('https://api.github.com/user/username',
+                   {:params => {:access_token => access_token},
+                    :accept => :json}))
+    email = JSON.parse(RestClient.get('https://api.github.com/user/emails',
+                   {:params => {:access_token => access_token},
+                    :accept => :json}))
+
+    @user = User.new(username: username, email: email)
+    session[:user_id] = @user.id
 
     redirect '/'
   end
