@@ -1,3 +1,5 @@
+require 'sinatra/auth/github'
+
 class Assassins < Sinatra::Base
 
   CLIENT_ID = ENV['GH_BASIC_CLIENT_ID']
@@ -10,10 +12,10 @@ class Assassins < Sinatra::Base
   end
 
   def authenticate!
-    erb :'sign_up/sign_up', :locals => {:client_id => CLIENT_ID}
+    erb :index, :locals => {:client_id => CLIENT_ID}
   end
 
-  get '/sign-up' do
+  get '/welcome' do
     if !authenticated?
       authenticate!
     else
@@ -25,15 +27,10 @@ class Assassins < Sinatra::Base
                                      {:params => {:access_token => access_token},
                                       :accept => :json})
       rescue => e
-        # request didn't succeed because the token was revoked so we
-        # invalidate the token stored in the session and render the
-        # index page so that the user can start the OAuth flow again
-
         session[:access_token] = nil
         return authenticate!
       end
 
-      # the request succeeded, so we check the list of current scopes
       if auth_result.headers.include? :x_oauth_scopes
         scopes = auth_result.headers[:x_oauth_scopes].split(', ')
       end
@@ -51,7 +48,7 @@ class Assassins < Sinatra::Base
     end
   end
 
-  post '/callback' do
+  get '/callback' do
     session_code = request.env['rack.request.query_hash']['code']
 
     result = RestClient.post('https://github.com/login/oauth/access_token',
@@ -62,17 +59,6 @@ class Assassins < Sinatra::Base
 
     session[:access_token] = JSON.parse(result)['access_token']
 
-    username = JSON.parse(RestClient.get('https://api.github.com/user/username',
-                   {:params => {:access_token => access_token},
-                    :accept => :json}))
-    email = JSON.parse(RestClient.get('https://api.github.com/user/emails',
-                   {:params => {:access_token => access_token},
-                    :accept => :json}))
-
-    @user = User.new(username: username, email: email)
-    session[:user_id] = @user.id
-
-    redirect '/'
+    redirect '/welcome'
   end
-
 end
