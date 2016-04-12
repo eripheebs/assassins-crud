@@ -1,6 +1,6 @@
 class Assassins < Sinatra::Base
 
-  get '/' do
+  get '/welcome' do
     erb :index, :locals => {:client_id => CLIENT_ID}
   end
 

@@ -4,5 +4,6 @@ class User
   property :id, Serial
   property :username, String, unique: true
   property :email, String, format: :email_address, required: true, unique: true
+  property :bio, Text
 
 end

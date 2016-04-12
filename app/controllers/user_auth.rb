@@ -1,64 +1,74 @@
 require 'sinatra/auth/github'
 
 class Assassins < Sinatra::Base
+    enable  :raise_errors
+    disable :show_exceptions
+    enable :inline_templates
 
-  CLIENT_ID = ENV['GH_BASIC_CLIENT_ID']
-  CLIENT_SECRET = ENV['GH_BASIC_SECRET_ID']
+    set :github_options, {
+      :scope     => 'user',
+      :secret    => ENV['GITHUB_CLIENT_SECRET'] || 'test_client_secret',
+      :client_id => ENV['GITHUB_CLIENT_ID']     || 'test_client_id'
+    }
+    register Sinatra::Auth::Github
 
-  use Rack::Session::Pool, :cookie_only => false
-
-  def authenticated?
-    session[:access_token]
-  end
-
-  def authenticate!
-    erb :index, :locals => {:client_id => CLIENT_ID}
-  end
-
-  get '/welcome' do
-    if !authenticated?
-      authenticate!
-    else
-      access_token = session[:access_token]
-      scopes = []
-
-      begin
-        auth_result = RestClient.get('https://api.github.com/user',
-                                     {:params => {:access_token => access_token},
-                                      :accept => :json})
-      rescue => e
-        session[:access_token] = nil
-        return authenticate!
-      end
-
-      if auth_result.headers.include? :x_oauth_scopes
-        scopes = auth_result.headers[:x_oauth_scopes].split(', ')
-      end
-
-      auth_result = JSON.parse(auth_result)
-
-      if scopes.include? 'user:email'
-        auth_result['private_emails'] =
-          JSON.parse(RestClient.get('https://api.github.com/user/emails',
-                         {:params => {:access_token => access_token},
-                          :accept => :json}))
-      end
-
-      erb :advanced, :locals => auth_result
+    get '/' do
+      erb :index
     end
-  end
 
-  get '/callback' do
-    session_code = request.env['rack.request.query_hash']['code']
+    get '/profile' do
+      authenticate!
+      user = User.first(email: github_user.email)
+      if user.nil?
+        flash.now[:error] = ["Please join the game!"]
+        erb :index
+      else
+        session[:user_id] = user.id
+        erb :profile
+      end
+    end
 
-    result = RestClient.post('https://github.com/login/oauth/access_token',
-                            {:client_id => CLIENT_ID,
-                             :client_secret => CLIENT_SECRET,
-                             :code => session_code},
-                             :accept => :json)
+    get '/login' do
+      authenticate!
+      user = User.first(email: github_user.email)
+      if user.nil?
+        flash.now[:error] = ["Please join the game!"]
+        erb :index
+      else
+        session[:user_id] = user.id
+        redirect '/'
+      end
+    end
 
-    session[:access_token] = JSON.parse(result)['access_token']
+    get '/logout' do
+      logout!
+      redirect '/'
+    end
 
-    redirect '/welcome'
+    get '/join_game' do
+      erb :join_game
+    end
+
+    post '/joined' do
+      authenticate!
+      if !User.first(email: github_user.email)
+        user = User.create(username: github_user.name, email: github_user.email)
+        session[:user_id]= user.id
+      end
+      redirect '/'
+    end
+
+    get '/joined' do
+      redirect '/'
+    end
+end
+
+class BadAuthentication < Sinatra::Base
+  get '/unauthenticated' do
+    status 403
+    <<-EOS
+    <h2>Unable to authenticate, sorry bud.</h2>
+    <p>#{env['warden'].message}</p>
+    EOS
   end
 end

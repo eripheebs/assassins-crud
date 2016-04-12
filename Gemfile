@@ -12,7 +12,6 @@ gem 'sinatra-partial'
 gem 'sinatra_auth_github'
 gem 'dotenv'
 gem 'rest-client'
-gemspec
 gem 'json'
 group :test do
   gem 'rspec'

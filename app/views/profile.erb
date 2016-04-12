@@ -1,0 +1,7 @@
+<h2>Profile</h2>
+<img src='<%= env['warden'].user.avatar_url %>' height='30px' />
+<dl>
+  <dt><%= github_user.name %></dt>
+  <dd><%= github_user.email %></dd>
+  <p><%if current_user%><%=current_user.bio%></p>
+</dl>

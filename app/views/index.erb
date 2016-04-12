@@ -2,4 +2,14 @@
 <h1>Are you ready to play assassins?</h1>
 <button>Join existing team</button>
 
-<a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=<%= client_id %>">Click here</a> to begin!</a>
+  <h3><%if flash[:error]%><%= flash[:error][0]%><%end%></h3>
+<% if authenticated? %>
+  <h2>
+    <img src='<%= env['warden'].user.avatar_url %>' height='30px' />
+    Welcome <%= github_user.name %>
+  </h2>
+<% else %>
+  <h2>Welcome stranger</h2>
+<% end %>
+
+<h2><a href='/join_game'>Click Here to Join Game</a></h2>
