@@ -20,3 +20,4 @@ require_relative 'server'
 
 require_relative 'controllers/static_pages'
 require_relative 'controllers/user_auth'
+require_relative 'controllers/assignments'

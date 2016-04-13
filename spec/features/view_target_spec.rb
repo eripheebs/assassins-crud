@@ -12,7 +12,8 @@ feature 'View target' do
 
   scenario 'Assassin should have button to see target name on index page' do
     visit '/'
-    click_button 'View your target'
+    expect(page).to have_selector('#target-name', visible: false)
+    click_button 'Reveal your target'
     expect(page).to have_content 'Kyle Buttner'
   end
 end

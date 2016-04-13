@@ -1,2 +1,12 @@
-<div id="target-name"><%= @current_user_target.first_name + " " + @current_user_target.last_name %></div>
-<button id="toggle-target-visibility">View your target</button>
+<div class="hidden-first" id="target-name"><%= @current_user_target.first_name + " " + @current_user_target.last_name %></div>
+<button id="reveal-target">Reveal your target</button>
+
+<button class="hidden-first" id="target-eliminated">I have eliminated this target</button>
+
+<form action="assignments" method="post" class="hidden-first">
+  <h3>How did you do it?</h3>
+  <input type="radio" name="elimination-style" value="Option 1">Option 1<br>
+  <input type="radio" name="elimination-style" value="Option 2">Option 2<br>
+  <input type="radio" name="elimination-style" value="Option 3">Option 3<br>
+  <input type="submit" value="Submit">
+</form>

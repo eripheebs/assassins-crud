@@ -1,4 +1,6 @@
 // show and hide target name
-$('button#toggle-target-visibility').click(function(){
-  $('div#target-name').toggle();
-});
+$(document).ready(function(){
+  $('button#reveal-target').click(function(){
+    $('div#target-name').toggle();
+  });
+})
