@@ -6,6 +6,7 @@ require 'sinatra/partial'
 require 'data_mapper'
 require 'dm-postgres-adapter'
 require_relative 'data_mapper_setup'
+require 'sinatra/auth/github'
 require 'dotenv'
 Dotenv.load
 
