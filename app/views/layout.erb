@@ -6,11 +6,10 @@
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
   <script src='<%=url('interface.js')%>'></script>
-  <link href="stylesheet.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheet.css"/>
 </head>
 
 <body>
-
     <h1>Welcome</h1>
     <ul>
       <li><a href='/'>Home</a></li>
@@ -22,6 +21,7 @@
     <% end %>
     </ul>
     <hr />
-    <%= yield %>
+    <%= flash %>
 
+    <%= yield %>
 </body>

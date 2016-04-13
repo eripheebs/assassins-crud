@@ -1,4 +1,9 @@
 /* keep target name hidden initially */
-#target-name {
-  display: none
+h3 {
+  display: none;
+  visibility: hidden;
+}
+
+body {
+  background-color: red;
 }

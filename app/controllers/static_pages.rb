@@ -7,6 +7,7 @@ class Assassins < Sinatra::Base
     else
       erb :index
     end
+  end
 
   get '/about' do
     erb :about
