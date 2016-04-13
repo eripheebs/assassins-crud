@@ -13,8 +13,8 @@ Dotenv.load
 require 'rest-client'
 require 'json'
 
-CLIENT_ID = ENV['GH_BASIC_CLIENT_ID']
-CLIENT_SECRET = ENV['GH_BASIC_SECRET_ID']
+CLIENT_ID = ENV['GITHUB_CLIENT_ID']
+CLIENT_SECRET = ENV['GITHUB_CLIENT_SECRET']
 
 require_relative 'server'
 

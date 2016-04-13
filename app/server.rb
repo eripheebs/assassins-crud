@@ -7,7 +7,7 @@ class Assassins < Sinatra::Base
   set :partial_template_engine, :erb
 
   enable :partial_underscores
-  
+
   enable  :raise_errors
   disable :show_exceptions
   enable :inline_templates
